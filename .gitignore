@@ -1,0 +1,11 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Local env files (this project has no server-side secrets today,
+# but keep this in place in case that ever changes)
+.env
+.env.local

@@ -1,0 +1,29 @@
+# Render Blueprint - deploys the hub as a free, static site.
+# Access control (domain-restricted sign-in) is enforced in front of this
+# site by Cloudflare Access, configured separately in the Cloudflare
+# dashboard - see README.md "Access control" for the full setup.
+services:
+  - type: web
+    name: remotebase-employee-hub
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Strict-Transport-Security
+        value: "max-age=63072000; includeSubDomains"
+      - path: /*
+        name: Permissions-Policy
+        value: "geolocation=(), camera=(), microphone=()"
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"

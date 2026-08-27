@@ -1,0 +1,8 @@
+{
+  "_comment": "Source of truth for who may open the hub. This file does not enforce anything by itself - it documents the email domains that must be entered as the Cloudflare Access policy rule (see README.md, 'Access control'). Keep the two in sync.",
+  "allowedEmailDomains": [
+    "remotebase.com",
+    "snapdev.ai",
+    "ember.new"
+  ]
+}
