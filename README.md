@@ -19,6 +19,7 @@ assets/logo.png          header logo
 assets/favicon.png       browser tab icon
 config/allowed-domains.json   documents which email domains may access the hub
 render.yaml              Render deploy config + security headers
+vercel.json              Vercel deploy config + security headers (alternative to Render)
 ```
 
 ## Local development
@@ -70,26 +71,36 @@ domains: `remotebase.com`, `snapdev.ai`, `ember.new` (documented in
 `config/allowed-domains.json`, which is a reference, not an enforcement
 mechanism).
 
-This is done with **Cloudflare Access** in front of a Render static
-site, at no cost, since total users are expected to be 50 or fewer
-(Cloudflare Access's free-tier cap). There is no auth code in this repo
-to write or maintain - enforcement happens at Cloudflare's edge, before
-the page ever loads.
+This is done with **Cloudflare Access** in front of the static site, at
+no cost, since total users are expected to be 50 or fewer (Cloudflare
+Access's free-tier cap). There is no auth code in this repo to write or
+maintain - enforcement happens at Cloudflare's edge, before the page
+ever loads. This is why it doesn't matter which static host sits behind
+it: Cloudflare Access gates traffic at the DNS/proxy layer, so the same
+setup works whether the origin is Render or Vercel.
+
+**Why not gate this on the host itself?** Vercel's free Hobby plan has
+no way to protect a production domain - its own login gate ("Standard
+Protection") only covers preview deployments and the auto-generated
+preview URLs, never the production domain, and password/SSO protection
+requires a paid plan. Render's free static sites have no built-in gate
+either. Cloudflare Access is the free layer that both are missing.
 
 ### One-time setup
 
-1. **Deploy this repo to Render as a static site** (see Deployment
-   below) and note the `*.onrender.com` URL it gets.
+1. **Deploy this repo as a static site** on Render or Vercel (see
+   Deployment below) and note the URL it gets (`*.onrender.com` or
+   `*.vercel.app`).
 2. **Add your domain to Cloudflare** (if not already there): create a
    free Cloudflare account, add the domain (e.g. `remotebase.com`), and
    update your registrar's nameservers to Cloudflare's.
-3. **Point a subdomain at Render**: in Cloudflare DNS, add a `CNAME`
-   record (for example `hub` -> `<your-app>.onrender.com`), proxied
-   (orange cloud, not grey).
-4. **Add the same custom domain in Render**: in the Render dashboard, on
-   this static site, add the custom domain (e.g. `hub.remotebase.com`)
-   and follow Render's verification step. Render issues its own TLS
-   certificate for it automatically.
+3. **Point a subdomain at your host**: in Cloudflare DNS, add a `CNAME`
+   record (for example `hub` -> `<your-app>.onrender.com` or
+   `<your-app>.vercel.app`), proxied (orange cloud, not grey).
+4. **Add the same custom domain on your host**: on Render, add the
+   custom domain to the static site in its dashboard and follow the
+   verification step; on Vercel, add it under the project's Domains tab.
+   Both issue their own TLS certificate for it automatically.
 5. **Create a Zero Trust Access application**: in the Cloudflare
    dashboard, go to Zero Trust -> Access -> Applications -> Add an
    application -> Self-hosted. Set the application domain to
@@ -117,6 +128,12 @@ expose a document to someone without Drive access.
 
 ## Deployment
 
+Two free static-hosting options are supported - pick one. Either way,
+HTTPS is automatic on the platform's own URL and on any custom domain
+added afterwards (see Access control above for the custom-domain steps).
+
+### Render
+
 This repo includes a `render.yaml` Blueprint. In the Render dashboard:
 "New" -> "Blueprint" -> point it at this repository. Render reads
 `render.yaml` and creates a free static site with no build step
@@ -125,12 +142,23 @@ This repo includes a `render.yaml` Blueprint. In the Render dashboard:
 Alternatively, create the static site manually: build command empty,
 publish directory `.`.
 
-HTTPS is automatic on the `*.onrender.com` URL and on any custom domain
-added afterwards (see Access control above for the custom-domain steps).
+### Vercel
+
+This repo also includes a `vercel.json` with the same security headers.
+In the Vercel dashboard: "Add New" -> "Project" -> import this
+repository. Vercel will try to auto-detect a framework; `vercel.json`
+sets `"framework": null` and `"outputDirectory": "."` so it's instead
+served as a plain static site with no build step, straight from the
+repo root.
+
+Remember: Vercel's free Hobby plan cannot gate the production domain by
+itself (see Access control above) - Cloudflare Access in front of it is
+what actually restricts who can open the hub.
 
 ## Security
 
-- **Headers** (set in `render.yaml`, applied to every path): a strict
+- **Headers** (set in `render.yaml` and mirrored in `vercel.json`,
+  applied to every path): a strict
   `Content-Security-Policy` (only this origin plus Google Fonts is
   allowed to load anything), `X-Content-Type-Options: nosniff`,
   `Referrer-Policy: strict-origin-when-cross-origin`,
