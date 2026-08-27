@@ -216,8 +216,7 @@ main { padding: 46px 0 20px; }
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 20px; box-shadow: var(--shadow);
 }
-.contact .who { color: var(--slate); font-size: 13px; line-height: 1.45; margin: 0 0 13px; }
-.contact .who .who-name { color: var(--ink); font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15.5px; }
+.contact h3 { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.35; margin: 0 0 13px; }
 .contact ul { list-style: none; margin: 0 0 15px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .contact ul li { font-size: 13.5px; color: var(--slate); padding-left: 16px; position: relative; }
 .contact ul li::before { content: ""; position: absolute; left: 3px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--brand-2); }
