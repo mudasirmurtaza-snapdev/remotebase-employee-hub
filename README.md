@@ -86,6 +86,11 @@ preview URLs, never the production domain, and password/SSO protection
 requires a paid plan. Render's free static sites have no built-in gate
 either. Cloudflare Access is the free layer that both are missing.
 
+A full, click-by-click walkthrough (starting from "I don't have a
+Cloudflare account yet") is in
+[`docs/cloudflare-access-setup.md`](docs/cloudflare-access-setup.md). The
+summary below assumes you're already comfortable with Cloudflare.
+
 ### One-time setup
 
 1. **Deploy this repo as a static site** on Render or Vercel (see
