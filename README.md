@@ -46,6 +46,12 @@ Nothing else needs to change to add, remove, or re-word an entry.
   non-clickable label (the current state for all 5 contacts - no real
   destination has been supplied yet). Set a real `href` (a `mailto:`
   address or a Slack link) to turn it into a clickable button.
+- **Search chips**: each is `{ label, query }` - `label` is the button
+  text, `query` is what actually gets typed into search when it's
+  clicked. `query` must be a word or phrase that really appears in a
+  link label, category title, or blurb (search is a literal substring
+  match), or the chip will always show "Nothing matches that yet".
+  Check a new query actually hits something before adding it.
 - **FAQ**: a plain array of `{ q, a }` pairs.
 - The page rebuilds itself from this file on every load - no other file
   needs to change.

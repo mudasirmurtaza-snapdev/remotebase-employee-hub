@@ -49,10 +49,10 @@ HUB_DATA.categories.forEach((cat, i) => {
 
 /* ---- Chips ---- */
 const chipWrap = document.getElementById("chips");
-HUB_DATA.chips.forEach(text => {
+HUB_DATA.chips.forEach(({ label, query }) => {
   const b = document.createElement("button");
-  b.className = "chip"; b.textContent = text;
-  b.onclick = () => { search.value = text; runFilter(); search.focus(); };
+  b.className = "chip"; b.textContent = label;
+  b.onclick = () => { search.value = query; runFilter(); search.focus(); };
   chipWrap.appendChild(b);
 });
 

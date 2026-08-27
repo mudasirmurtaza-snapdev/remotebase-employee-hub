@@ -87,8 +87,18 @@ const HUB_DATA = {
     },
   ],
 
-  /* Quick chips under the search bar - each fills the search box with this term */
-  chips: ["Apply for leave", "Claim overtime", "Insurance", "Employment letter", "Laptop issue"],
+  /* Quick chips under the search bar. "label" is what shows on the button;
+     "query" is the term it actually searches for - it must appear somewhere
+     in a link label, category title, or blurb, or the chip will always show
+     "Nothing matches that yet". Search matches on the literal query string,
+     so keep queries short and check they hit something before adding one. */
+  chips: [
+    { label: "Apply for leave", query: "leave" },
+    { label: "Claim overtime", query: "overtime" },
+    { label: "Insurance", query: "insurance" },
+    { label: "Employment letter", query: "people" },
+    { label: "Laptop issue", query: "laptop" },
+  ],
 
   /* A contact with href: "#" renders as a plain label (message/DM them directly).
      Give it a real href (mailto:, Slack deep link, etc.) to turn it into a clickable button. */
