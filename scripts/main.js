@@ -63,7 +63,7 @@ HUB_DATA.contacts.forEach(c => {
   el.className = "contact reveal";
   const set = isSet(c.href);
   el.innerHTML = `
-    <div class="who"><span class="who-name">${esc(c.name)}</span> - ${esc(c.who)}</div>
+    <h3>${esc(c.who)}</h3>
     <ul>${c.handles.map(h => `<li>${esc(h)}</li>`).join("")}</ul>
     ${ set
       ? `<a class="cta" href="${esc(c.href)}" target="_blank" rel="noopener">${esc(c.cta)} →</a>`
